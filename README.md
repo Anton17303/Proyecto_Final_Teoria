@@ -1,2 +1,2 @@
-##Proyecto Final de Teoria De la Computacion
+#Proyecto Final de Teoria De la Computacion
 
