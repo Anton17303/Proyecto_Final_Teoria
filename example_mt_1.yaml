@@ -1,0 +1,58 @@
+---
+machine:
+  q_states:
+    q_list: ['q0', 'q_found', 'q_accept', 'q_reject']
+    initial: 'q0'
+    final: ['q_accept']
+  alphabet:
+    input: ['a', 'b']
+    tape: ['a', 'b', '#']
+  blank: '#'
+  delta:
+    - params:
+        initial_state: 'q0'
+        tape_input: 'a'
+      output:
+        final_state: 'q_found'
+        tape_output: 'a'
+        tape_displacement: 'R'
+    - params:
+        initial_state: 'q0'
+        tape_input: 'b'
+      output:
+        final_state: 'q0'
+        tape_output: 'b'
+        tape_displacement: 'R'
+    - params:
+        initial_state: 'q0'
+        tape_input: '#'
+      output:
+        final_state: 'q_reject'
+        tape_output: '#'
+        tape_displacement: 'S'
+    - params:
+        initial_state: 'q_found'
+        tape_input: 'a'
+      output:
+        final_state: 'q_found'
+        tape_output: 'a'
+        tape_displacement: 'R'
+    - params:
+        initial_state: 'q_found'
+        tape_input: 'b'
+      output:
+        final_state: 'q_found'
+        tape_output: 'b'
+        tape_displacement: 'R'
+    - params:
+        initial_state: 'q_found'
+        tape_input: '#'
+      output:
+        final_state: 'q_accept'
+        tape_output: '#'
+        tape_displacement: 'S'
+simulation_strings:
+  - abba
+  - bbbb
+  - ''
+  - a

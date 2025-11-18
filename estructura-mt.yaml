@@ -1,0 +1,34 @@
+q_states:
+  q_list: ['q0', 'q_accept']
+  initial: 'q0'
+  final: ['q_accept']
+alphabet:
+  input: ['a', 'b']
+  tape: ['a', 'b', '#']
+blank: '#'
+delta:
+  - params:
+      initial_state: 'q0'
+      tape_input: 'a'
+    output:
+      final_state: 'q0'
+      tape_output: 'b'
+      tape_displacement: 'R'
+  - params:
+      initial_state: 'q0'
+      tape_input: 'b'
+    output:
+      final_state: 'q0'
+      tape_output: 'b'
+      tape_displacement: 'R'
+  - params:
+      initial_state: 'q0'
+      tape_input: '#'
+    output:
+      final_state: 'q_accept'
+      tape_output: '#'
+      tape_displacement: 'S'
+simulation_strings:
+  - aaaa
+  - baba
+  - ''
