@@ -1,0 +1,11 @@
+machine:
+  q_states:
+    q_list: ['q0', 'q_mark_left_a', 'q_mark_left_b', 'q_seek_right', 'q_swap', 'q_accept']
+    initial: 'q0'
+    final: ['q_accept']
+
+alphabet:
+  input: ['a', 'b']
+  tape: ['a', 'b', 'A', 'B', '#']
+
+blank: '#'
