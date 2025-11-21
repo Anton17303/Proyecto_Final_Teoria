@@ -157,3 +157,9 @@ delta:
     final_state: 'q_accept'
     tape_output: 'B'
     tape_displacement: 'L'
+
+simulation_strings:
+  - ababa
+  - aabbbb
+  - baaaba
+  - abbabb
