@@ -1,146 +1,119 @@
 machine:
-q_states:
-q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
-initial: 'q0'
-final: ['q_accept']
+  q_states:
+    q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
+    initial: 'q0'
+    final: ['q_accept']
 
-alphabet:
-input: ['a', 'b']
-tape: ['a', 'b', 'X', '#']
+  alphabet:
+    input: ['a', 'b']
+    tape: ['a', 'b', 'X', '#']
 
-blank: '#'
+  blank: '#'
 
-delta: []
+  delta:
 
-machine:
-q_states:
-q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
-initial: 'q0'
-final: ['q_accept']
+    # ---------- q0: buscar primera 'a' sin marcar ----------
+    - params:
+        initial_state: 'q0'
+        tape_input: 'a'
+      output:
+        final_state: 'q_seek_b'
+        tape_output: 'X'
+        tape_displacement: 'R'
 
-alphabet:
-input: ['a', 'b']
-tape: ['a', 'b', 'X', '#']
+    # Si ve X, sigue buscando nuevas 'a'
+    - params:
+        initial_state: 'q0'
+        tape_input: 'X'
+      output:
+        final_state: 'q0'
+        tape_output: 'X'
+        tape_displacement: 'R'
 
-blank: '#'
+    # Si se encuentra un b antes de terminar → reject
+    - params:
+        initial_state: 'q0'
+        tape_input: 'b'
+      output:
+        final_state: 'q_reject'
+        tape_output: 'b'
+        tape_displacement: 'S'
 
-delta:
-# q0: buscar primera 'a' sin convertir
-- params:
-initial_state: 'q0'
-tape_input: 'a'
-output:
-final_state: 'q_seek_b'
-tape_output: 'X'
-tape_displacement: 'R'
+    # Si no quedan a por procesar → aceptar
+    - params:
+        initial_state: 'q0'
+        tape_input: '#'
+      output:
+        final_state: 'q_accept'
+        tape_output: '#'
+        tape_displacement: 'S'
 
-```
-# q0 encuentra 'X', sigue buscando nuevas 'a'
-- params:
-    initial_state: 'q0'
-    tape_input: 'X'
-  output:
-    final_state: 'q0'
-    tape_output: 'X'
-    tape_displacement: 'R'
 
-# Si en q0 se encuentra un 'b' → error
-- params:
-    initial_state: 'q0'
-    tape_input: 'b'
-  output:
-    final_state: 'q_reject'
-    tape_output: 'b'
-    tape_displacement: 'S'
+    # ---------- q_seek_b: buscar primera b ----------
+    - params:
+        initial_state: 'q_seek_b'
+        tape_input: 'a'
+      output:
+        final_state: 'q_seek_b'
+        tape_output: 'a'
+        tape_displacement: 'R'
 
-# Si q0 encuentra fin → aceptar
-- params:
-    initial_state: 'q0'
-    tape_input: '#'
-  output:
-    final_state: 'q_accept'
-    tape_output: '#'
-    tape_displacement: 'S'
-```
+    - params:
+        initial_state: 'q_seek_b'
+        tape_input: 'X'
+      output:
+        final_state: 'q_seek_b'
+        tape_output: 'X'
+        tape_displacement: 'R'
 
-machine:
-q_states:
-q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
-initial: 'q0'
-final: ['q_accept']
+    # Marca la b correspondiente
+    - params:
+        initial_state: 'q_seek_b'
+        tape_input: 'b'
+      output:
+        final_state: 'q_return'
+        tape_output: 'X'
+        tape_displacement: 'L'
 
-alphabet:
-input: ['a', 'b']
-tape: ['a', 'b', 'X', '#']
+    # Si no encuentra b → reject
+    - params:
+        initial_state: 'q_seek_b'
+        tape_input: '#'
+      output:
+        final_state: 'q_reject'
+        tape_output: '#'
+        tape_displacement: 'S'
 
-blank: '#'
 
-delta:
-### q_seek_b: buscar primera b
-- params:
-initial_state: 'q_seek_b'
-tape_input: 'a'
-output:
-final_state: 'q_seek_b'
-tape_output: 'a'
-tape_displacement: 'R'
+    # ---------- q_return: regresar al inicio ----------
+    - params:
+        initial_state: 'q_return'
+        tape_input: 'X'
+      output:
+        final_state: 'q_return'
+        tape_output: 'X'
+        tape_displacement: 'L'
 
-```
-- params:
-    initial_state: 'q_seek_b'
-    tape_input: 'X'
-  output:
-    final_state: 'q_seek_b'
-    tape_output: 'X'
-    tape_displacement: 'R'
+    - params:
+        initial_state: 'q_return'
+        tape_input: 'a'
+      output:
+        final_state: 'q_return'
+        tape_output: 'a'
+        tape_displacement: 'L'
 
-# Encuentra primera 'b'
-- params:
-    initial_state: 'q_seek_b'
-    tape_input: 'b'
-  output:
-    final_state: 'q_return'
-    tape_output: 'X'
-    tape_displacement: 'L'
+    # Cuando llega al principio vuelve a q0
+    - params:
+        initial_state: 'q_return'
+        tape_input: '#'
+      output:
+        final_state: 'q0'
+        tape_output: '#'
+        tape_displacement: 'R'
 
-# Si no hay b → error
-- params:
-    initial_state: 'q_seek_b'
-    tape_input: '#'
-  output:
-    final_state: 'q_reject'
-    tape_output: '#'
-    tape_displacement: 'S'
-
-### q_return: regresar al inicio
-- params:
-    initial_state: 'q_return'
-    tape_input: 'X'
-  output:
-    final_state: 'q_return'
-    tape_output: 'X'
-    tape_displacement: 'L'
-
-- params:
-    initial_state: 'q_return'
-    tape_input: 'a'
-  output:
-    final_state: 'q_return'
-    tape_output: 'a'
-    tape_displacement: 'L'
-
-- params:
-    initial_state: 'q_return'
-    tape_input: '#'
-  output:
-    final_state: 'q0'
-    tape_output: '#'
-    tape_displacement: 'R'
-```
 
 simulation_strings:
-
-* aaaaabbbbb
-* aaabbbb
-* aaaabbbb
-* bbbbba
+  - aaaaabbbbb
+  - aaabbbb
+  - aaaabbbb
+  - bbbbba
