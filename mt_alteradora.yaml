@@ -9,3 +9,151 @@ alphabet:
   tape: ['a', 'b', 'A', 'B', '#']
 
 blank: '#'
+
+delta:
+
+### q0: encontrar primera no marcada
+- params:
+    initial_state: 'q0'
+    tape_input: 'A'
+  output:
+    final_state: 'q0'
+    tape_output: 'A'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q0'
+    tape_input: 'B'
+  output:
+    final_state: 'q0'
+    tape_output: 'B'
+    tape_displacement: 'R'
+
+# Marcar a
+- params:
+    initial_state: 'q0'
+    tape_input: 'a'
+  output:
+    final_state: 'q_mark_left_a'
+    tape_output: 'A'
+    tape_displacement: 'R'
+
+# Marcar b
+- params:
+    initial_state: 'q0'
+    tape_input: 'b'
+  output:
+    final_state: 'q_mark_left_b'
+    tape_output: 'B'
+    tape_displacement: 'R'
+
+# Si ya no quedan sin marcar, terminar
+- params:
+    initial_state: 'q0'
+    tape_input: '#'
+  output:
+    final_state: 'q_accept'
+    tape_output: '#'
+    tape_displacement: 'S'
+
+
+### Buscar el extremo derecho (para A)
+- params:
+    initial_state: 'q_mark_left_a'
+    tape_input: 'a'
+  output:
+    final_state: 'q_mark_left_a'
+    tape_output: 'a'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_a'
+    tape_input: 'b'
+  output:
+    final_state: 'q_mark_left_a'
+    tape_output: 'b'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_a'
+    tape_input: 'A'
+  output:
+    final_state: 'q_mark_left_a'
+    tape_output: 'A'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_a'
+    tape_input: 'B'
+  output:
+    final_state: 'q_mark_left_a'
+    tape_output: 'B'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_a'
+    tape_input: '#'
+  output:
+    final_state: 'q_swap'
+    tape_output: '#'
+    tape_displacement: 'L'
+
+
+### Buscar extremo derecho (para B)
+- params:
+    initial_state: 'q_mark_left_b'
+    tape_input: 'a'
+  output:
+    final_state: 'q_mark_left_b'
+    tape_output: 'a'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_b'
+    tape_input: 'b'
+  output:
+    final_state: 'q_mark_left_b'
+    tape_output: 'b'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_b'
+    tape_input: 'A'
+  output:
+    final_state: 'q_mark_left_b'
+    tape_output: 'A'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_b'
+    tape_input: 'B'
+  output:
+    final_state: 'q_mark_left_b'
+    tape_output: 'B'
+    tape_displacement: 'R'
+
+- params:
+    initial_state: 'q_mark_left_b'
+    tape_input: '#'
+  output:
+    final_state: 'q_swap'
+    tape_output: '#'
+    tape_displacement: 'L'
+
+
+### q_swap: intercambiar
+- params:
+    initial_state: 'q_swap'
+    tape_input: 'a'
+  output:
+    final_state: 'q_accept'
+    tape_output: 'A'
+    tape_displacement: 'L'
+
+- params:
+    initial_state: 'q_swap'
+    tape_input: 'b'
+  output:
+    final_state: 'q_accept'
+    tape_output: 'B'
+    tape_displacement: 'L'
