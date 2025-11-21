@@ -62,3 +62,85 @@ tape_displacement: 'R'
     tape_output: '#'
     tape_displacement: 'S'
 ```
+
+machine:
+q_states:
+q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
+initial: 'q0'
+final: ['q_accept']
+
+alphabet:
+input: ['a', 'b']
+tape: ['a', 'b', 'X', '#']
+
+blank: '#'
+
+delta:
+### q_seek_b: buscar primera b
+- params:
+initial_state: 'q_seek_b'
+tape_input: 'a'
+output:
+final_state: 'q_seek_b'
+tape_output: 'a'
+tape_displacement: 'R'
+
+```
+- params:
+    initial_state: 'q_seek_b'
+    tape_input: 'X'
+  output:
+    final_state: 'q_seek_b'
+    tape_output: 'X'
+    tape_displacement: 'R'
+
+# Encuentra primera 'b'
+- params:
+    initial_state: 'q_seek_b'
+    tape_input: 'b'
+  output:
+    final_state: 'q_return'
+    tape_output: 'X'
+    tape_displacement: 'L'
+
+# Si no hay b → error
+- params:
+    initial_state: 'q_seek_b'
+    tape_input: '#'
+  output:
+    final_state: 'q_reject'
+    tape_output: '#'
+    tape_displacement: 'S'
+
+### q_return: regresar al inicio
+- params:
+    initial_state: 'q_return'
+    tape_input: 'X'
+  output:
+    final_state: 'q_return'
+    tape_output: 'X'
+    tape_displacement: 'L'
+
+- params:
+    initial_state: 'q_return'
+    tape_input: 'a'
+  output:
+    final_state: 'q_return'
+    tape_output: 'a'
+    tape_displacement: 'L'
+
+- params:
+    initial_state: 'q_return'
+    tape_input: '#'
+  output:
+    final_state: 'q0'
+    tape_output: '#'
+    tape_displacement: 'R'
+```
+
+simulation_strings:
+
+* aaaaabbbbb
+* aaabbbb
+* aaaabbbb
+* bbbbba
