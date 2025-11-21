@@ -1,0 +1,13 @@
+machine:
+q_states:
+q_list: ['q0', 'q_seek_b', 'q_return', 'q_accept', 'q_reject']
+initial: 'q0'
+final: ['q_accept']
+
+alphabet:
+input: ['a', 'b']
+tape: ['a', 'b', 'X', '#']
+
+blank: '#'
+
+delta: []
